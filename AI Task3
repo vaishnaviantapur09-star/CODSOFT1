@@ -1,0 +1,30 @@
+Image Captioning.....
+
+import tensorflow as tf
+import numpy as np
+from tensorflow.keras.preprocessing import image
+
+model = tf.keras.applications.MobileNetV2(weights='imagenet')
+
+def caption_image(img_path):
+
+    img = image.load_img(img_path, target_size=(224,224))
+    x = image.img_to_array(img)
+    x = np.expand_dims(x, axis=0)
+
+    x = tf.keras.applications.mobilenet_v2.preprocess_input(x)
+
+    preds = model.predict(x)
+
+    decoded = tf.keras.applications.mobilenet_v2.decode_predictions(preds, top=1)
+
+    label = decoded[0][0][1]
+
+    caption = "This image likely contains a " + label
+
+    return caption
+
+
+img_path = input("Enter image path: ")
+
+print(caption_image(img_path))
