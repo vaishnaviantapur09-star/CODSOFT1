@@ -1,0 +1,47 @@
+Recommendation System....
+
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import CountVectorizer
+
+movies = [
+"avengers action hero marvel",
+"batman dark hero gotham",
+"spiderman marvel superhero",
+"titanic romance ship love",
+"notebook romance love story",
+"john wick action assassin",
+"mission impossible spy action"
+]
+
+names = [
+"Avengers",
+"Batman",
+"Spiderman",
+"Titanic",
+"The Notebook",
+"John Wick",
+"Mission Impossible"
+]
+
+vector = CountVectorizer()
+matrix = vector.fit_transform(movies)
+
+similarity = cosine_similarity(matrix)
+
+fav = input("Enter your favorite movie: ")
+
+if fav in names:
+
+    idx = names.index(fav)
+
+    scores = list(enumerate(similarity[idx]))
+
+    scores = sorted(scores,key=lambda x:x[1],reverse=True)
+
+    print("\nRecommended Movies:\n")
+
+    for i in scores[1:4]:
+        print(names[i[0]])
+
+else:
+    print("Movie not in database")
